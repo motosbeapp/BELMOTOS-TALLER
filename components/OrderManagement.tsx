@@ -1,15 +1,14 @@
-
 import React, { useState, useMemo } from 'react';
-import { WorkshopOrder, OrderStatus, OrderUpdate } from '../types';
+import { WorkshopOrder, OrderStatus, OrderUpdate } from '../types.ts';
 import { 
   Search, FileDown, Eye, Filter, ChevronRight, X, 
-  Save, Camera, Clock, Wrench, User, Bike, Trash2, 
+  Save, Camera, Clock, Wrench, User, Trash2, 
   Plus, History, ClipboardCheck, DollarSign
 } from 'lucide-react';
-import { STATUS_COLORS, STATUS_ICONS, MotorcycleIcon } from '../constants';
+import { STATUS_COLORS, STATUS_ICONS, MotorcycleIcon } from '../constants.tsx';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { generateOrderPDF, generateTechnicalReportPDF } from '../utils/pdf';
+import { generateOrderPDF, generateTechnicalReportPDF } from '../utils/pdf.ts';
 
 interface OrderManagementProps {
   orders: WorkshopOrder[];
@@ -35,7 +34,6 @@ const OrderManagement: React.FC<OrderManagementProps> = ({ orders, onUpdateOrder
 
   const handleUpdate = (updated: WorkshopOrder) => {
     onUpdateOrder(updated);
-    // No cerramos el modal para permitir seguir editando o generar reportes
   };
 
   const handleDelete = (id: string) => {
@@ -89,7 +87,7 @@ const OrderManagement: React.FC<OrderManagementProps> = ({ orders, onUpdateOrder
                   <h3 className="text-lg font-bold text-gray-900">{order.motorcycle.plate}</h3>
                   <p className="text-xs text-gray-500">{order.motorcycle.model}</p>
                 </div>
-                <span className={`text-[9px] font-bold uppercase px-2 py-1 rounded-full ${STATUS_COLORS[order.status]}`}>
+                <span className={`text-[9px] font-bold uppercase px-2 py-1 rounded-full ${STATUS_COLORS[order.status as keyof typeof STATUS_COLORS]}`}>
                   {order.status}
                 </span>
               </div>
@@ -135,7 +133,6 @@ const OrderEditModal = ({ order, onClose, onUpdate, onDelete }: {
   onDelete: (id: string) => void
 }) => {
   const [activeTab, setActiveTab] = useState<'info' | 'technical' | 'process'>('technical');
-  // Usamos copia profunda para evitar mutaciones directas de props
   const [localOrder, setLocalOrder] = useState<WorkshopOrder>(JSON.parse(JSON.stringify(order)));
 
   const handleSave = () => {
@@ -174,11 +171,10 @@ const OrderEditModal = ({ order, onClose, onUpdate, onDelete }: {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div className="bg-white w-full max-w-4xl max-h-[95vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col animate-scale-in">
-        {/* Header Modal */}
         <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
           <div className="flex items-center gap-4">
-            <div className={`p-3 rounded-2xl ${STATUS_COLORS[localOrder.status]}`}>
-              {STATUS_ICONS[localOrder.status]}
+            <div className={`p-3 rounded-2xl ${STATUS_COLORS[localOrder.status as keyof typeof STATUS_COLORS]}`}>
+              {STATUS_ICONS[localOrder.status as keyof typeof STATUS_ICONS]}
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-900">Orden #{localOrder.id}</h2>
@@ -199,14 +195,12 @@ const OrderEditModal = ({ order, onClose, onUpdate, onDelete }: {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="flex px-6 border-b border-gray-50 bg-gray-50/30">
           <TabButton active={activeTab === 'technical'} onClick={() => setActiveTab('technical')} icon={<Wrench size={16} />} label="Gestión Técnica" />
           <TabButton active={activeTab === 'process'} onClick={() => setActiveTab('process')} icon={<History size={16} />} label="Bitácora de Avances" />
           <TabButton active={activeTab === 'info'} onClick={() => setActiveTab('info')} icon={<Eye size={16} />} label="Ficha Original" />
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto p-8">
           {activeTab === 'technical' && (
             <div className="max-w-3xl mx-auto space-y-8">
@@ -249,7 +243,7 @@ const OrderEditModal = ({ order, onClose, onUpdate, onDelete }: {
                 <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Diagnóstico y Notas Técnicas</label>
                 <textarea 
                   rows={8}
-                  placeholder="Describa el trabajo realizado, piezas cambiadas y recomendaciones para el cliente..."
+                  placeholder="Describa el trabajo realizado..."
                   className="w-full p-5 bg-gray-50 border border-gray-200 rounded-2xl resize-none focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
                   value={localOrder.technicianNotes}
                   onChange={(e) => setLocalOrder({...localOrder, technicianNotes: e.target.value})}
@@ -315,38 +309,11 @@ const OrderEditModal = ({ order, onClose, onUpdate, onDelete }: {
                     <InfoRow label="Email" value={localOrder.owner.email} />
                   </dl>
                 </div>
-                <div className="bg-gray-50 p-6 rounded-[2rem]">
-                  <h4 className="flex items-center gap-2 font-bold text-gray-900 mb-4 text-emerald-700">
-                    <Bike size={18} /> Especificaciones Moto
-                  </h4>
-                  <dl className="grid grid-cols-2 gap-4">
-                    <InfoRow label="Modelo" value={localOrder.motorcycle.model} />
-                    <InfoRow label="Placa" value={localOrder.motorcycle.plate} />
-                    <InfoRow label="Kilometraje" value={`${localOrder.motorcycle.mileage} KM`} />
-                    <InfoRow label="Año" value={localOrder.motorcycle.year} />
-                  </dl>
-                </div>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-[2rem]">
-                <h4 className="flex items-center gap-2 font-bold text-gray-900 mb-4 text-emerald-700">
-                  <ClipboardCheck size={18} /> Reporte Inicial
-                </h4>
-                <div className="space-y-4">
-                  <div>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Problema Reportado</span>
-                    <p className="text-sm text-gray-700 mt-1 italic">{localOrder.clientReport || 'Sin reporte detallado'}</p>
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Observaciones del Recibidor</span>
-                    <p className="text-sm text-gray-700 mt-1 italic">{localOrder.observations || 'Sin observaciones'}</p>
-                  </div>
-                </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Footer */}
         <div className="p-6 border-t border-gray-100 bg-white sticky bottom-0 flex justify-between items-center gap-3">
           <button 
             onClick={() => onDelete(localOrder.id)} 

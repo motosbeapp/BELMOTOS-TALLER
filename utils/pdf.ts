@@ -1,6 +1,5 @@
-
 import { jsPDF } from 'jspdf';
-import { WorkshopOrder } from '../types';
+import { WorkshopOrder } from '../types.ts';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 

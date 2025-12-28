@@ -1,6 +1,5 @@
-
 import React, { useMemo, useState } from 'react';
-import { WorkshopOrder, OrderStatus, OperationType } from '../types';
+import { WorkshopOrder, OrderStatus, OperationType } from '../types.ts';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   Cell, Legend, LineChart, Line

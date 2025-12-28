@@ -45,6 +45,15 @@ const App: React.FC = () => {
     notify(`Orden #${updatedOrder.id} actualizada con éxito`);
   };
 
+  const handleDeleteOrder = (orderId: string) => {
+    if (window.confirm(`¿Está seguro de que desea eliminar la orden #${orderId}? Esta acción no se puede deshacer.`)) {
+      const updated = orders.filter(order => order.id !== orderId);
+      setOrders(updated);
+      saveOrders(updated);
+      notify(`Orden #${orderId} eliminada correctamente`);
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
@@ -52,7 +61,13 @@ const App: React.FC = () => {
       case 'reception':
         return <ReceptionForm onSave={handleSaveOrder} />;
       case 'management':
-        return <OrderManagement orders={orders} onUpdateOrder={handleUpdateOrder} />;
+        return (
+          <OrderManagement 
+            orders={orders} 
+            onUpdateOrder={handleUpdateOrder} 
+            onDeleteOrder={handleDeleteOrder}
+          />
+        );
       case 'reports':
         return <Reports orders={orders} />;
       default:

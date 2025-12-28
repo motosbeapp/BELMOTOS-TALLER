@@ -77,23 +77,27 @@ export const generateOrderPDF = (order: WorkshopOrder) => {
   doc.setFont('helvetica', 'bold');
   doc.text('INVENTARIO Y ESTADO FÍSICO', margin, y);
   y += 6;
-  doc.setFontSize(7);
+  doc.setFontSize(7.5);
   doc.setFont('helvetica', 'normal');
   
   const checklistItems = Object.entries(order.checklist);
-  const itemsPerCol = 15;
-  const colWidth = 62;
+  // Reducimos a 2 columnas para acomodar textos más largos
+  const itemsPerCol = Math.ceil(checklistItems.length / 2);
+  const colWidth = 90;
   
   checklistItems.forEach(([item, checked], index) => {
     if (y > 270) { doc.addPage(); y = 20; }
     const col = Math.floor(index / itemsPerCol);
     const rowInCol = index % itemsPerCol;
-    const itemY = y + (rowInCol * 4.5);
+    const itemY = y + (rowInCol * 5);
     const mark = checked ? '[OK]' : '[X]';
-    doc.text(`${mark} ${item}`, margin + (col * colWidth), itemY);
+    
+    // Truncar si es demasiado largo para la columna
+    const displayText = item.length > 55 ? item.substring(0, 52) + '...' : item;
+    doc.text(`${mark} ${displayText}`, margin + (col * colWidth), itemY);
   });
   
-  y += (itemsPerCol * 4.5) + 12;
+  y += (itemsPerCol * 5) + 12;
 
   // Reports
   if (y > 250) { doc.addPage(); y = 20; }
@@ -114,7 +118,7 @@ export const generateOrderPDF = (order: WorkshopOrder) => {
   doc.text(obsText, margin, y);
   y += (obsText.length * 4) + 10;
 
-  // Fotos de Ingreso (Agregado para cumplir con la solicitud)
+  // Fotos de Ingreso
   if (order.photoVehicle || order.photoChassis) {
     if (y > 210) { doc.addPage(); y = 20; }
     doc.setFontSize(10);
@@ -151,9 +155,26 @@ export const generateOrderPDF = (order: WorkshopOrder) => {
     y += imgHeight + 15;
   }
 
+  // Condiciones Legales
+  if (y > 210) { doc.addPage(); y = 20; }
+  doc.setDrawColor(230);
+  doc.setFillColor(250, 250, 250);
+  doc.rect(margin, y, 180, 45, 'F');
+  
+  doc.setFontSize(7.5);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(0);
+  doc.text('CONDICIONES DEL SERVICIO:', margin + 5, y + 6);
+  
+  doc.setFont('helvetica', 'normal');
+  const legalText = "Condiciones: En caso de incendio, accidentes, terremotos, la empresa no responderá por los desperfectos ocasionados a la motocicleta, ni por los objetos dejados en ella.\n\nTodos los trabajos realizados a la motocicleta deberán ser cancelados en el momento de su retiro. En el caso que la reparación necesite de la preparación de un presupuesto, una vez dado a conocer se otorga un plazo de 24 horas para autorizar o no el mismo, y el cliente en el segundo de los casos deberá retirar la motocicleta al vencer el mismo plazo.\n\nSe entiende que quien contrata y ordena el trabajo descrito, es el propietario de la motocicleta, o está autorizado por el propietario quien conoce y acepta estas condiciones que son parte integrante del contrato que se celebra y que consta en este documento.";
+  const splitLegal = doc.splitTextToSize(legalText, 170);
+  doc.text(splitLegal, margin + 5, y + 12);
+  y += 50;
+
   // Footer / Firmas
-  if (y > 270) { doc.addPage(); y = 20; }
-  y = 275;
+  if (y > 275) { doc.addPage(); y = 20; }
+  y = 280;
   doc.setFontSize(7);
   doc.line(margin, y, 80, y);
   doc.line(120, y, 195, y);

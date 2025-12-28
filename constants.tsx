@@ -14,45 +14,46 @@ import {
 
 export const CHECKLIST_DATA = [
   {
-    category: 'INSPECCIÓN FÍSICA',
+    category: 'INSPECCIÓN MECÁNICA & ESTRUCTURAL',
     items: [
-      'Tanque de gasolina acoplado', 'Tapa de tanque de gasolina', 'Línea de combustible al carburador',
-      'Posa pies funcionales', 'Pedal de freno', 'Tapas laterales acoplados',
-      'Guarda barro delantero acoplado', 'Guardabarros trasero acoplado', 'Asiento acoplado',
-      'Base del motor aseguradas', 'Tubo de escape acoplado', 'Pedal de arranque funcionado',
-      'Base de la tijera ajustada con bujes colocados', 'Amortiguadores ajustados',
-      'Fundas de amortiguadores delanteros', 'Parrilla trasera ajustada',
-      'Manillas de acelerador y embrague', 'Kit de arrastre (Cadena, piñón, corona)',
-      'Placas (No tenerlas defectuosas)', 'Posición del manurio correcta',
-      'Resortes (Freno, burro, válvula de freno)'
+      'Combustible y Tanque (Tapa, fijación, nivel)',
+      'Motor y Escape (Bases, nivel de aceite, escape)',
+      'Transmisión (Kit arrastre, cambios, piñón/corona)',
+      'Suspensión (Amortiguadores, bujes, fundas)',
+      'Manubrio y Controles (Posición, manillas, comandos)',
+      'Carrocería y Asiento (Tapas, guardabarros, parrilla, asiento, reposapiés)',
+      'Ruedas y Neumáticos (Llantas, presión, estado)'
     ]
   },
   {
-    category: 'INSPECCIÓN ELÉCTRICA',
+    category: 'SISTEMA ELÉCTRICO',
     items: [
-      'Suichera funcionando', 'Luces delanteras (Alta, baja, servicio)',
-      'Luces de cruce (Izquierda, derecha)', 'Luz de freno (Delantero, Trasero)',
-      'Luz del tablero', 'Corneta', 'Encendido eléctrico'
+      'Luces (Delantera Alta/Baja, cruce, freno, tablero)',
+      'Dispositivos (Corneta, encendido eléctrico, suichera)'
     ]
   },
   {
-    category: 'ACCESORIOS',
+    category: 'SISTEMA DE FRENOS',
     items: [
-      'Herramientas', 'Etiquetas colocadas', 'Retrovisores', 'Llaves'
+      'Componentes (Líquido, caliper, arañas, discos/campanas)',
+      'Funcionamiento (Palanca, pedal, respuesta)'
     ]
   },
   {
-    category: 'SISTEMAS DE FRENOS',
+    category: 'ACCESORIOS Y DOCUMENTACIÓN',
     items: [
-      'Línea de freno por el lado derecho', 'Caliper de freno ajustado y con seguros',
-      'Arañas de la transmisión', 'Líquido de frenos', 
-      'Frenos delanteros y traseros disco o campana', 'Llantas - Infladas'
+      'Herramientas, Retrovisores y Llaveros',
+      'Etiquetas (Certificación, advertencia)',
+      'Documentación (Certificado de origen, titulo)'
     ]
   },
   {
-    category: 'MOTOR',
+    category: 'PRUEBA FUNCIONAL RÁPIDA',
     items: [
-      'Probar cambios de velocidades (5 y Neutro)', 'Nivel de aceite'
+      'Arranque (Eléctrico y/o pedal)',
+      'Respuesta de aceleración',
+      'Cambios de velocidad (incluye neutral)',
+      'Frenos delantero/trasero (sensación y respuesta)'
     ]
   }
 ];

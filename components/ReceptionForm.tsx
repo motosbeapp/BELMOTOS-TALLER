@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { WorkshopOrder, OperationType, OrderStatus } from '../types';
 import { CHECKLIST_DATA, CHECKLIST_ITEMS, MotorcycleIcon } from '../constants';
 import { generateOrderId } from '../utils/storage';
-import { Camera, Save, User, ListChecks } from 'lucide-react';
+import { Camera, Save, User, ListChecks, ShieldAlert } from 'lucide-react';
 
 interface ReceptionFormProps {
   onSave: (order: WorkshopOrder) => void;
@@ -91,7 +91,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
           </button>
           <button 
             onClick={handleSubmit}
-            className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 shadow-sm flex items-center gap-2 transition-all"
+            className="px-6 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 shadow-lg shadow-emerald-200 flex items-center gap-2 transition-all font-bold active:scale-95"
           >
             <Save size={18} />
             Guardar Orden
@@ -99,7 +99,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
         </div>
       </div>
 
-      <form className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <form className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center gap-2 mb-4 text-emerald-700">
@@ -229,6 +229,20 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
               ></textarea>
             </div>
           </div>
+
+          {/* Condiciones del Servicio - UI Block */}
+          <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100 space-y-3">
+            <div className="flex items-center gap-2 text-amber-800">
+              <ShieldAlert size={20} />
+              <h2 className="font-bold">Condiciones del Servicio</h2>
+            </div>
+            <div className="text-xs text-amber-900/80 space-y-2 leading-relaxed italic">
+              <p><strong>Condiciones:</strong> En caso de incendio, accidentes, terremotos, la empresa no responderá por los desperfectos ocasionados a la motocicleta, ni por los objetos dejados en ella.</p>
+              <p>Todos los trabajos realizados a la motocicleta deberán ser cancelados en el momento de su retiro.</p>
+              <p>En el caso que la reparación necesite de la preparación de un presupuesto, una vez dado a conocer se otorga un plazo de 24 horas para autorizar o no el mismo, y el cliente en el segundo de los casos deberá retirar la motocicleta al vencer el mismo plazo.</p>
+              <p>Se entiende que quien contrata y ordena el trabajo descrito, es el propietario de la motocicleta, o está autorizado por el propietario quien conoce y acepta estas condiciones que son parte integrante del contrato que se celebra y que consta en este documento.</p>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-6">
@@ -284,10 +298,12 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                  <div className="relative aspect-video rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden hover:border-emerald-300">
                    {previewVehicle ? <img src={previewVehicle} className="w-full h-full object-cover" /> : <Camera className="text-gray-400" />}
                    <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, 'photoVehicle')} className="absolute inset-0 opacity-0 cursor-pointer" />
+                   <div className="absolute bottom-1 right-1 bg-black/50 px-2 py-0.5 rounded text-[10px] text-white">VISTA GENERAL</div>
                  </div>
                  <div className="relative aspect-video rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden hover:border-emerald-300">
                    {previewChassis ? <img src={previewChassis} className="w-full h-full object-cover" /> : <Camera className="text-gray-400" />}
                    <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, 'photoChassis')} className="absolute inset-0 opacity-0 cursor-pointer" />
+                   <div className="absolute bottom-1 right-1 bg-black/50 px-2 py-0.5 rounded text-[10px] text-white">SERIAL CHASIS</div>
                  </div>
                </div>
              </div>

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { NAV_ITEMS } from '../constants';
+import { NAV_ITEMS } from '../constants.tsx';
 import { Settings, LogOut, Wrench } from 'lucide-react';
 
 interface LayoutProps {
@@ -12,7 +12,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab }) => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
-      {/* Sidebar Desktop */}
       <aside className="hidden md:flex flex-col w-64 bg-emerald-800 text-white p-6 sticky top-0 h-screen">
         <div className="flex items-center gap-2 mb-10">
           <div className="p-2 bg-emerald-600 rounded-lg">
@@ -50,7 +49,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab }) =>
         </div>
       </aside>
 
-      {/* Mobile Navigation (Bottom) */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-3 flex justify-between items-center z-50">
         {NAV_ITEMS.map((item) => (
           <button
@@ -66,7 +64,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab }) =>
         ))}
       </nav>
 
-      {/* Main Content Area */}
       <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8 overflow-y-auto max-w-7xl mx-auto w-full">
         {children}
       </main>

@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { WorkshopOrder, OperationType, OrderStatus } from '../types';
-import { CHECKLIST_DATA, CHECKLIST_ITEMS, MotorcycleIcon } from '../constants';
-import { generateOrderId } from '../utils/storage';
+import { WorkshopOrder, OperationType, OrderStatus } from '../types.ts';
+import { CHECKLIST_DATA, CHECKLIST_ITEMS, MotorcycleIcon } from '../constants.tsx';
+import { generateOrderId } from '../utils/storage.ts';
 import { Camera, Save, User, ListChecks, ShieldAlert } from 'lucide-react';
 
 interface ReceptionFormProps {
@@ -113,7 +113,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="text" 
                   value={formData.owner?.name}
                   onChange={(e) => handleInputChange('owner', 'name', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -122,7 +122,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="text" 
                   value={formData.owner?.idNumber}
                   onChange={(e) => handleInputChange('owner', 'idNumber', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -131,7 +131,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="tel" 
                   value={formData.owner?.phone}
                   onChange={(e) => handleInputChange('owner', 'phone', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -140,7 +140,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="email" 
                   value={formData.owner?.email}
                   onChange={(e) => handleInputChange('owner', 'email', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
             </div>
@@ -158,7 +158,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="text" 
                   value={formData.motorcycle?.plate}
                   onChange={(e) => handleInputChange('motorcycle', 'plate', e.target.value.toUpperCase())}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -167,7 +167,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="text" 
                   value={formData.motorcycle?.model}
                   onChange={(e) => handleInputChange('motorcycle', 'model', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -176,7 +176,7 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="number" 
                   value={formData.motorcycle?.mileage}
                   onChange={(e) => handleInputChange('motorcycle', 'mileage', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
               <div className="space-y-1">
@@ -185,99 +185,36 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                   type="number" 
                   value={formData.motorcycle?.year}
                   onChange={(e) => handleInputChange('motorcycle', 'year', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
-                />
-              </div>
-              <div className="col-span-2 space-y-1">
-                <label className="text-sm font-medium text-gray-700">Serial Chasis</label>
-                <input 
-                  type="text" 
-                  value={formData.motorcycle?.chassisSerial}
-                  onChange={(e) => handleInputChange('motorcycle', 'chassisSerial', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
-                />
-              </div>
-              <div className="col-span-2 space-y-1">
-                <label className="text-sm font-medium text-gray-700">Serial Motor</label>
-                <input 
-                  type="text" 
-                  value={formData.motorcycle?.engineSerial}
-                  onChange={(e) => handleInputChange('motorcycle', 'engineSerial', e.target.value)}
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">Reporte del Cliente</label>
-              <textarea 
-                rows={3}
-                value={formData.clientReport}
-                onChange={(e) => handleInputChange('root', 'clientReport', e.target.value)}
-                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all resize-none"
-              ></textarea>
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">Observaciones Iniciales</label>
-              <textarea 
-                rows={3}
-                value={formData.observations}
-                onChange={(e) => handleInputChange('root', 'observations', e.target.value)}
-                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none transition-all resize-none"
-              ></textarea>
-            </div>
-          </div>
-
-          {/* Condiciones del Servicio - UI Block */}
           <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100 space-y-3">
             <div className="flex items-center gap-2 text-amber-800">
               <ShieldAlert size={20} />
               <h2 className="font-bold">Condiciones del Servicio</h2>
             </div>
-            <div className="text-xs text-amber-900/80 space-y-2 leading-relaxed italic">
-              <p><strong>Condiciones:</strong> En caso de incendio, accidentes, terremotos, la empresa no responderá por los desperfectos ocasionados a la motocicleta, ni por los objetos dejados en ella.</p>
-              <p>Todos los trabajos realizados a la motocicleta deberán ser cancelados en el momento de su retiro.</p>
-              <p>En el caso que la reparación necesite de la preparación de un presupuesto, una vez dado a conocer se otorga un plazo de 24 horas para autorizar o no el mismo, y el cliente en el segundo de los casos deberá retirar la motocicleta al vencer el mismo plazo.</p>
-              <p>Se entiende que quien contrata y ordena el trabajo descrito, es el propietario de la motocicleta, o está autorizado por el propietario quien conoce y acepta estas condiciones que son parte integrante del contrato que se celebra y que consta en este documento.</p>
+            <div className="text-xs text-amber-900/80 italic">
+              <p>El cliente acepta que el taller no responde por objetos dejados en el vehículo ni por daños fortuitos ajenos al proceso de reparación.</p>
             </div>
           </div>
         </div>
 
         <div className="space-y-6">
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">Tipo de Operación</label>
-                <select 
-                  className="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
-                  value={formData.operationType}
-                  onChange={(e) => handleInputChange('root', 'operationType', e.target.value)}
-                >
-                  <option value={OperationType.REVISION}>Mantenimiento / Revisión</option>
-                  <option value={OperationType.REPARACION}>Reparación General</option>
-                  <option value={OperationType.GARANTIA}>Garantía</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center gap-2 mb-4 text-emerald-700">
               <ListChecks size={20} />
-              <h2 className="font-semibold text-lg">Inventario Físico</h2>
+              <h2 className="font-semibold text-lg">Inventario</h2>
             </div>
-            <div className="max-h-[500px] overflow-y-auto space-y-4 pr-2">
+            <div className="max-h-[500px] overflow-y-auto space-y-4">
               {CHECKLIST_DATA.map((cat) => (
-                <div key={cat.category} className="space-y-2">
-                  <h3 className="text-xs font-bold text-gray-400 border-b border-gray-50 pb-1 uppercase tracking-wider">{cat.category}</h3>
+                <div key={cat.category}>
+                  <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">{cat.category}</h3>
                   {cat.items.map((item) => (
-                    <label 
-                      key={item} 
-                      className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                    >
-                      <span className="text-xs text-gray-600 leading-tight">{item}</span>
+                    <label key={item} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                      <span className="text-xs text-gray-600">{item}</span>
                       <input 
                         type="checkbox" 
                         checked={formData.checklist?.[item] || false}
@@ -289,24 +226,6 @@ const ReceptionForm: React.FC<ReceptionFormProps> = ({ onSave }) => {
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
-             <div className="space-y-2">
-               <p className="text-sm font-medium text-gray-700">Fotos de Ingreso</p>
-               <div className="grid grid-cols-1 gap-2">
-                 <div className="relative aspect-video rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden hover:border-emerald-300">
-                   {previewVehicle ? <img src={previewVehicle} className="w-full h-full object-cover" /> : <Camera className="text-gray-400" />}
-                   <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, 'photoVehicle')} className="absolute inset-0 opacity-0 cursor-pointer" />
-                   <div className="absolute bottom-1 right-1 bg-black/50 px-2 py-0.5 rounded text-[10px] text-white">VISTA GENERAL</div>
-                 </div>
-                 <div className="relative aspect-video rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center overflow-hidden hover:border-emerald-300">
-                   {previewChassis ? <img src={previewChassis} className="w-full h-full object-cover" /> : <Camera className="text-gray-400" />}
-                   <input type="file" accept="image/*" onChange={(e) => handleImageChange(e, 'photoChassis')} className="absolute inset-0 opacity-0 cursor-pointer" />
-                   <div className="absolute bottom-1 right-1 bg-black/50 px-2 py-0.5 rounded text-[10px] text-white">SERIAL CHASIS</div>
-                 </div>
-               </div>
-             </div>
           </div>
         </div>
       </form>

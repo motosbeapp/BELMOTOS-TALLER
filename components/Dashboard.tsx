@@ -1,13 +1,13 @@
 
 import React, { useMemo } from 'react';
-import { WorkshopOrder, OrderStatus } from '../types.ts';
+import { WorkshopOrder, OrderStatus } from '../types';
 import { 
   PieChart as RePieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer 
 } from 'recharts';
 import { TrendingUp, Clock, CheckCircle2, AlertCircle, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { MotorcycleIcon } from '../constants.tsx';
+import { MotorcycleIcon } from '../constants';
 
 interface DashboardProps {
   orders: WorkshopOrder[];
@@ -47,16 +47,16 @@ const Dashboard: React.FC<DashboardProps> = ({ orders }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <StatCard title="Total" value={stats.total} icon={<TrendingUp />} color="bg-emerald-50" />
-        <StatCard title="Pendientes" value={stats.pending} icon={<Clock />} color="bg-gray-100" />
-        <StatCard title="En Proceso" value={stats.inProgress} icon={<AlertCircle />} color="bg-blue-50" />
-        <StatCard title="Listos" value={stats.completed} icon={<CheckCircle2 />} color="bg-emerald-100" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard title="Total Órdenes" value={stats.total} icon={<TrendingUp className="text-emerald-600" />} color="bg-emerald-50" />
+        <StatCard title="Pendientes" value={stats.pending} icon={<Clock className="text-gray-600" />} color="bg-gray-100" />
+        <StatCard title="En Proceso" value={stats.inProgress} icon={<AlertCircle className="text-blue-600" />} color="bg-blue-50" />
+        <StatCard title="Completados" value={stats.completed} icon={<CheckCircle2 className="text-emerald-600" />} color="bg-emerald-50" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-lg font-semibold mb-6">Distribución de Trabajo</h2>
+          <h2 className="text-lg font-semibold mb-6">Distribución por Tipo de Trabajo</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <RePieChart>
@@ -71,21 +71,31 @@ const Dashboard: React.FC<DashboardProps> = ({ orders }) => {
             </ResponsiveContainer>
           </div>
         </div>
+
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-lg font-semibold mb-4 text-gray-900">Actividad Reciente</h2>
+          <h2 className="text-lg font-semibold mb-4">Trabajos Recientes</h2>
           <div className="space-y-4">
-             {orders.slice(-5).reverse().map(o => (
-               <div key={o.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-xl">
-                 <div className="flex items-center gap-3">
-                   <MotorcycleIcon size={16} className="text-emerald-600" />
-                   <div>
-                     <p className="text-xs font-bold">{o.motorcycle.plate}</p>
-                     <p className="text-[10px] text-gray-500">{o.owner.name}</p>
-                   </div>
-                 </div>
-                 <span className="text-[9px] font-bold uppercase">{o.status}</span>
-               </div>
-             ))}
+            {orders.slice(-5).reverse().map(order => (
+              <div key={order.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
+                    <MotorcycleIcon size={20} />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">{order.motorcycle.plate} - {order.motorcycle.model}</p>
+                    <p className="text-xs text-gray-500">{order.owner.name}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full ${
+                    order.status === OrderStatus.COMPLETADO ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    {order.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+            {orders.length === 0 && <p className="text-center py-8 text-gray-400 italic">No hay órdenes registradas.</p>}
           </div>
         </div>
       </div>
@@ -97,8 +107,8 @@ const StatCard = ({ title, value, icon, color }: any) => (
   <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
     <div className={`p-4 rounded-xl ${color}`}>{icon}</div>
     <div>
-      <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{title}</p>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{title}</p>
+      <p className="text-3xl font-bold text-gray-900">{value}</p>
     </div>
   </div>
 );

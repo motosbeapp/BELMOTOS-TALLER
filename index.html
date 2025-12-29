@@ -3,206 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BELMOTOS - Gestión de Taller</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --emerald-600: #059669;
-            --emerald-700: #047857;
-            --emerald-800: #065f46;
-            --bg-light: #f8fafc;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            overflow-x: hidden;
-        }
-        #sidebar {
-            min-width: 280px;
-            max-width: 280px;
-            min-height: 100vh;
-            background-color: var(--emerald-800);
-            transition: all 0.3s;
-        }
-        #sidebar .nav-link {
-            color: rgba(255,255,255,0.7);
-            padding: 12px 20px;
-            border-radius: 12px;
-            margin: 4px 15px;
-            transition: 0.2s;
-        }
-        #sidebar .nav-link:hover {
-            color: white;
-            background-color: rgba(255,255,255,0.1);
-        }
-        #sidebar .nav-link.active {
-            color: white;
-            background-color: var(--emerald-600);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .main-content {
-            width: 100%;
-            padding: 30px;
-        }
-        .card {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-        .btn-emerald {
-            background-color: var(--emerald-600);
-            color: white;
-            border-radius: 10px;
-            padding: 10px 20px;
-            font-weight: 600;
-        }
-        .btn-emerald:hover {
-            background-color: var(--emerald-700);
-            color: white;
-        }
-        .form-control, .form-select {
-            border-radius: 10px;
-            padding: 10px 15px;
-            border: 1px solid #e2e8f0;
-        }
-        .form-control:focus {
-            border-color: var(--emerald-600);
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            padding: 15px 30px;
-            border-radius: 50px;
-            color: white;
-            background: var(--emerald-600);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            display: none;
-            animation: slideDown 0.4s ease-out forwards;
-        }
-        @keyframes slideDown {
-            from { top: -100px; opacity: 0; }
-            to { top: 20px; opacity: 1; }
-        }
-        @media (max-width: 768px) {
-            #sidebar { display: none; }
-            .mobile-nav { display: flex !important; }
-        }
-        .mobile-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            display: none;
-            justify-content: space-around;
-            padding: 10px;
-            z-index: 1000;
-        }
-        .mobile-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 10px;
-        }
-        .mobile-nav-item.active { color: var(--emerald-600); }
-    </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "jspdf": "https://esm.sh/jspdf@^3.0.4",
-    "date-fns": "https://esm.sh/date-fns@^4.1.0",
-    "date-fns/": "https://esm.sh/date-fns@^4.1.0/",
-    "recharts": "https://esm.sh/recharts@^3.6.0"
-  }
-}
-</script>
+    <title>Recepción de Vehículos</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="d-flex">
-        <!-- Sidebar Desktop -->
-        <nav id="sidebar" class="d-none d-md-block">
-            <div class="p-4 mb-4">
-                <h4 class="text-white fw-bold mb-0">
-                    <i class="fas fa-motorcycle me-2"></i>BELMOTOS
-                </h4>
-                <small class="text-white-50">Gestión de Taller</small>
+    <div class="container" id="formToPrint">
+        <header>
+            <h1>Formulario de Recepción de Vehículos</h1>
+        </header>
+
+        <form id="vehicleForm">
+            <div class="form-section">
+                <div class="order-number">
+                    <label>Orden de Servicio N°:</label>
+                    <span id="orderNumber"></span>
+                </div>
+                <div class="date-field">
+                    <label>Fecha de Ingreso:</label>
+                    <span id="currentDate"></span>
+                </div>
             </div>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" data-tab="dashboard">
-                        <i class="fas fa-th-large me-3"></i>Panel Principal
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-tab="reception">
-                        <i class="fas fa-plus-circle me-3"></i>Nueva Recepción
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-tab="management">
-                        <i class="fas fa-tools me-3"></i>Gestión de Trabajos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-tab="reports">
-                        <i class="fas fa-chart-line me-3"></i>Reportes
-                    </a>
-                </li>
-            </ul>
-            <div class="mt-auto p-4 border-top border-secondary">
-                <a href="#" class="nav-link text-white-50 p-0 mb-3"><i class="fas fa-cog me-2"></i>Ajustes</a>
-                <a href="#" class="nav-link text-white-50 p-0"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a>
+
+            <div class="form-section">
+                <h2>Operaciones</h2>
+                <div class="operations">
+                    <label>
+                        <input type="checkbox" name="operation" value="revision"> Revisión y mantenimiento
+                    </label>
+                    <label>
+                        <input type="checkbox" name="operation" value="reparacion"> Reparación
+                    </label>
+                    <label>
+                        <input type="checkbox" name="operation" value="garantia"> Garantía
+                    </label>
+                </div>
             </div>
-        </nav>
 
-        <!-- Main Content Area -->
-        <div class="main-content">
-            <div id="app-container">
-                <!-- El contenido se inyectará aquí -->
+            <div class="form-section">
+                <h2>Datos del Propietario</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="ownerName">Nombre:</label>
+                        <input type="text" id="ownerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerID">Cédula:</label>
+                        <input type="text" id="ownerID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerPhone">Teléfono:</label>
+                        <input type="tel" id="ownerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerEmail">Correo:</label>
+                        <input type="email" id="ownerEmail" required>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Mobile Nav -->
-    <div class="mobile-nav">
-        <a href="#" class="mobile-nav-item active" data-tab="dashboard">
-            <i class="fas fa-th-large mb-1"></i>Panel
-        </a>
-        <a href="#" class="mobile-nav-item" data-tab="reception">
-            <i class="fas fa-plus-circle mb-1"></i>Recepción
-        </a>
-        <a href="#" class="mobile-nav-item" data-tab="management">
-            <i class="fas fa-tools mb-1"></i>Gestión
-        </a>
-        <a href="#" class="mobile-nav-item" data-tab="reports">
-            <i class="fas fa-chart-line mb-1"></i>Reportes
-        </a>
-    </div>
+            <div class="form-section">
+                <h2>Datos de la Motocicleta</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="model">Modelo:</label>
+                        <input type="text" id="model" required>
+                    </div>
+                    <div class="form-group chassis-photo-container">
+                        <label for="chassisSerial">Serial del Chasis:</label>
+                        <input type="text" id="chassisSerial" required>
+                        <input type="file" id="chassisPhoto" accept="image/*" class="photo-input">
+                        <div id="chassisPhotoPreview" class="photo-preview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="engineSerial">Serial del Motor:</label>
+                        <input type="text" id="engineSerial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="displacement">Cilindrada:</label>
+                        <input type="text" id="displacement" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plate">Placa:</label>
+                        <input type="text" id="plate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mileage">Kilometraje:</label>
+                        <input type="number" id="mileage" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="color">Color:</label>
+                        <input type="text" id="color" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Año:</label>
+                        <input type="number" id="year" required>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Notification -->
-    <div id="notification" class="notification">
-        <span id="notification-text"></span>
-    </div>
+            <div class="form-section">
+                <h2>Inventario y Estado Físico</h2>
+                <div class="inventory-grid">
+                    <label><input type="checkbox" name="inventory" value="mirrors"> Espejos</label>
+                    <label><input type="checkbox" name="inventory" value="sidePanels"> Tapas laterales</label>
+                    <label><input type="checkbox" name="inventory" value="frontTurn"> Vías delanteras</label>
+                    <label><input type="checkbox" name="inventory" value="rearTurn"> Vías traseras</label>
+                    <label><input type="checkbox" name="inventory" value="paint"> Buen estado de pintura</label>
+                    <label><input type="checkbox" name="inventory" value="seat"> Asiento buen estado</label>
+                    <label><input type="checkbox" name="inventory" value="frontFender"> Guardafango delantero</label>
+                    <label><input type="checkbox" name="inventory" value="rearFender"> Guardafango Trasero</label>
+                    <label><input type="checkbox" name="inventory" value="headlight"> Luz foco frontal</label>
+                    <label><input type="checkbox" name="inventory" value="battery"> Batería</label>
+                    <label><input type="checkbox" name="inventory" value="tank"> Tanque buen estado</label>
+                    <label><input type="checkbox" name="inventory" value="switch"> Switch principal</label>
+                    <label><input type="checkbox" name="inventory" value="chain"> Cadena</label>
+                    <label><input type="checkbox" name="inventory" value="handle"> Manecilla</label>
+                    <label><input type="checkbox" name="inventory" value="frontWheel"> Rueda delantera</label>
+                    <label><input type="checkbox" name="inventory" value="rearWheel"> Rueda trasera</label>
+                    <label><input type="checkbox" name="inventory" value="alarm"> Alarma</label>
+                    <label><input type="checkbox" name="inventory" value="keys"> Llaveros</label>
+                    <label><input type="checkbox" name="inventory" value="stopLight"> Luz stop</label>
+                    <label><input type="checkbox" name="inventory" value="horn"> Corneta</label>
+                    <label><input type="checkbox" name="inventory" value="tools"> Herramientas</label>
+                    <label><input type="checkbox" name="inventory" value="helmet"> Casco</label>
+                </div>
+            </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module" src="index.tsx"></script>
+            <div class="form-section">
+                <h2>Fotografía del Vehículo</h2>
+                <div class="photo-upload">
+                    <input type="file" id="vehiclePhoto" accept="image/*">
+                    <div id="photoPreview" class="photo-preview"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Observaciones Generales</h2>
+                <textarea id="observations" rows="4"></textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Reporte del Cliente</h2>
+                <textarea id="clientReport" rows="4"></textarea>
+            </div>
+
+            <div class="conditions">
+                <p><strong>Condiciones:</strong> En caso de incendio, accidentes, terremotos, la empresa no responderá por los desperfectos ocasionados a la motocicleta, ni por los objetos dejados en ella.</p>
+                <ol>
+                    <li>Todos los trabajos realizados a la motocicleta deberán ser cancelados en el momento de su retiro.</li>
+                    <li>En el caso que la reparación necesite de la preparación de un presupuesto, una vez dado a conocer se otorga un plazo de 24 horas para autorizar o no el mismo, y el cliente en el segundo de los casos deberá retirar la motocicleta al vencer el mismo plazo.</li>
+                    <li>Se entiende que quien contrata y ordena el trabajo descrito, es el propietario de la motocicleta, o está autorizado por el propietario quien conoce y acepta estas condiciones que son parte integrante del contrato que se celebra y que consta en este documento.</li>
+                </ol>
+            </div>
+
+            <div class="signatures">
+                <div class="signature-box">
+                    <p>Firma del Cliente</p>
+                </div>
+                <div class="signature-box">
+                    <p>Firma del Encargado de Garantías</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="downloadPdf">Descargar PDF</button>
+                <button type="reset">Limpiar Formulario</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
